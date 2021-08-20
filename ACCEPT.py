@@ -185,18 +185,7 @@ class ColonyCounter(Frame):
         upper_mask = image < 210 
         threshold_Mask = np.array(upper_mask*lower_mask,dtype=int) 
         Segmented_Im = image * threshold_Mask
-        scale = 1
-        delta = 0
-        ddepth = cv2.CV_16S
-        grad_x = cv2.Sobel(Segmented_Im, ddepth, 1, 0, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-        grad_y = cv2.Sobel(Segmented_Im, ddepth, 0, 1, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-        abs_grad_x = cv2.convertScaleAbs(grad_x)
-        abs_grad_y = cv2.convertScaleAbs(grad_y)
-        grad = self.Contrast(cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0),2)
-        lower_mask = grad > 0 
-        upper_mask = grad < 256
-        threshold_Mask = np.array(upper_mask*lower_mask,dtype=int)
-        return threshold_Mask
+        return Segmented_Im
             
     def define_colony(self,image,pixels,x,y,image_size):
         '''This is a recursive function that will assign itself in the array if it
